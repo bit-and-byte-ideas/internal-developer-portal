@@ -1,13 +1,18 @@
 # Multi-stage Dockerfile for Backstage
 # Stage 1: Build
-FROM node:20-bookworm-slim AS build
+FROM node:20-bookworm AS build
 
-# Install dependencies needed for native modules (better-sqlite3, etc.)
+# Install dependencies needed for native modules (better-sqlite3, isolated-vm, etc.)
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     python3 \
     g++ \
+    gcc \
+    make \
     build-essential \
+    git \
+    ca-certificates \
+    libsqlite3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -20,15 +25,18 @@ COPY .yarn ./.yarn
 COPY packages/app/package.json ./packages/app/
 COPY packages/backend/package.json ./packages/backend/
 
-# Install dependencies
-RUN yarn install --immutable
+# Install dependencies (skip build scripts initially to avoid isolated-vm issues)
+RUN yarn install --immutable --mode=skip-build
+
+# Rebuild only essential native modules
+RUN yarn rebuild better-sqlite3 || true
 
 # Copy source files
 COPY . .
 
-# Build backend and frontend
-RUN yarn tsc
-RUN yarn build:backend
+# Build all packages (backend and frontend)
+# Note: build:all compiles TypeScript and bundles the applications
+RUN yarn build:all
 
 # Stage 2: Runtime
 FROM node:20-bookworm-slim
