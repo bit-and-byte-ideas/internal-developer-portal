@@ -55,12 +55,13 @@ catalog:
           frequency: { minutes: 60 }
           timeout: { minutes: 1 }
     githubOrg:
-      default:
-        githubUrl: https://github.com
-        orgs: [bit-and-byte-ideas]
-        schedule:
-          frequency: { minutes: 60 }
-          timeout: { minutes: 15 }
+      id: default
+      githubUrl: https://github.com
+      orgs: [bit-and-byte-ideas]
+      schedule:
+        initialDelay: { minutes: 1 }
+        frequency: { minutes: 60 }
+        timeout: { minutes: 15 }
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
