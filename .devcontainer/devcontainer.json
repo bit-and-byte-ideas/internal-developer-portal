@@ -14,7 +14,8 @@
 		"ghcr.io/devcontainers/features/github-cli:1": {},
 		"ghcr.io/prulloac/devcontainer-features/ollama:1": {},
 		"ghcr.io/devcontainers-extra/features/pre-commit:2": {},
-		"ghcr.io/devcontainers-extra/features/prettier:1": {}
+		"ghcr.io/devcontainers-extra/features/prettier:1": {},
+		"ghcr.io/devcontainers-extra/features/claude-code:1": {}
 	},
 
 	"mounts": ["source=/run/host-services/ssh-auth.sock,target=/ssh-agent,type=bind"],
