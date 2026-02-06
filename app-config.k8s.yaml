@@ -1,0 +1,42 @@
+# Kubernetes-specific configuration for local deployment
+app:
+  title: Bit & Byte Ideas Backstage App
+  baseUrl: http://localhost:7007
+
+backend:
+  baseUrl: http://localhost:7007
+  listen:
+    port: 7007
+    host: 0.0.0.0
+  csp:
+    connect-src: ["'self'", 'http:', 'https:']
+  cors:
+    origin: http://localhost:7007
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
+  # Use SQLite for local Kubernetes deployment
+  database:
+    client: better-sqlite3
+    connection: /tmp/backstage.db
+
+auth:
+  providers:
+    guest: {}
+
+catalog:
+  locations:
+    # Local example data
+    - type: file
+      target: ./examples/entities.yaml
+
+    # Local example template
+    - type: file
+      target: ./examples/template/template.yaml
+      rules:
+        - allow: [Template]
+
+    # Local example organizational data
+    - type: file
+      target: ./examples/org.yaml
+      rules:
+        - allow: [User, Group]

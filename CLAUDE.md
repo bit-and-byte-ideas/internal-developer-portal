@@ -58,3 +58,48 @@ GitHub integration discovers repos from the `bit-and-byte-ideas` organization an
 - **Testing:** Jest 30, Playwright, @testing-library/react
 - **Formatting:** Prettier 2.x (config from `@backstage/cli/config/prettier`)
 - **Linting:** ESLint via `@backstage/cli`, lint-staged for pre-commit hooks
+
+## Containerization & Deployment
+
+### Docker
+
+**Build image:**
+```bash
+docker build -t backstage:local .
+```
+
+The Dockerfile is a multi-stage build:
+- **Build stage**: Node 20, installs deps with `yarn install --immutable`, builds backend + frontend
+- **Runtime stage**: Node 20 slim, non-root user (`backstage`), includes healthcheck on `/healthcheck`
+- **Config**: Uses `app-config.yaml` + `app-config.k8s.yaml` (override via mounted volumes)
+- **Database**: SQLite by default (configurable via environment variables)
+
+### Kubernetes
+
+**Directory structure:** `deploy/k8s/base/` (reusable base) + `deploy/k8s/overlays/docker-desktop/` (local overlay)
+
+**Deploy to Docker Desktop:**
+```bash
+# 1. Build image
+docker build -t backstage:local .
+
+# 2. Create namespace
+kubectl create namespace backstage
+
+# 3. Apply manifests
+kubectl apply -k deploy/k8s/overlays/docker-desktop
+
+# 4. Port forward to access
+kubectl port-forward -n backstage svc/backstage 7007:7007
+```
+
+Then access at http://localhost:7007
+
+**Key resources:**
+- Deployment with readiness/liveness probes on `/healthcheck`
+- ClusterIP service on port 7007
+- ConfigMap generated from `app-config.k8s.yaml`
+- ServiceAccount for the pod
+- Ingress (disabled in docker-desktop overlay)
+
+See `deploy/k8s/README.md` for detailed deployment instructions and troubleshooting.
