@@ -16,74 +16,74 @@ spec:
     spec:
       serviceAccountName: backstage
       containers:
-      - name: backstage
-        image: backstage:local
-        imagePullPolicy: IfNotPresent
-        ports:
-        - name: http
-          containerPort: 7007
-          protocol: TCP
-        env:
-        - name: NODE_ENV
-          value: production
-        - name: AUTH_GITHUB_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: github-backstage-local-credentials
-              key: client-id
-        - name: AUTH_GITHUB_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: github-backstage-local-credentials
-              key: client-secret
-        # Add custom environment variables here or via ConfigMap
-        volumeMounts:
-        - name: github-credentials
-          mountPath: /app/github-app-credentials.yaml
-          subPath: github-app-credentials.yaml
-          readOnly: true
-        # Readiness probe: ensure backend is ready to serve traffic
-        readinessProbe:
-          httpGet:
-            path: /healthcheck
-            port: 7007
-          initialDelaySeconds: 15
-          periodSeconds: 10
-          timeoutSeconds: 3
-          successThreshold: 1
-          failureThreshold: 3
-        # Liveness probe: restart container if backend becomes unhealthy
-        livenessProbe:
-          httpGet:
-            path: /healthcheck
-            port: 7007
-          initialDelaySeconds: 60
-          periodSeconds: 30
-          timeoutSeconds: 3
-          successThreshold: 1
-          failureThreshold: 3
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "250m"
-          limits:
-            memory: "1Gi"
-            cpu: "1000m"
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 1000
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: false
-          capabilities:
-            drop:
-            - ALL
+        - name: backstage
+          image: backstage:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 7007
+              protocol: TCP
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: AUTH_GITHUB_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: github-backstage-local-credentials
+                  key: client-id
+            - name: AUTH_GITHUB_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: github-backstage-local-credentials
+                  key: client-secret
+          # Add custom environment variables here or via ConfigMap
+          volumeMounts:
+            - name: github-credentials
+              mountPath: /app/github-app-credentials.yaml
+              subPath: github-app-credentials.yaml
+              readOnly: true
+          # Readiness probe: ensure backend is ready to serve traffic
+          readinessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 7007
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          # Liveness probe: restart container if backend becomes unhealthy
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 7007
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: '512Mi'
+              cpu: '250m'
+            limits:
+              memory: '1Gi'
+              cpu: '1000m'
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
       volumes:
-      - name: github-credentials
-        secret:
-          secretName: github-backstage-local-credentials
-      - name: app-config
-        configMap:
-          name: backstage-config
+        - name: github-credentials
+          secret:
+            secretName: github-backstage-local-credentials
+        - name: app-config
+          configMap:
+            name: backstage-config
       securityContext:
         fsGroup: 1000
 ---

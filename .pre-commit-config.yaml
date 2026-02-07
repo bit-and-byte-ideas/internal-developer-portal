@@ -1,0 +1,60 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: '(\.yarn/|\.md$)'
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: 'v4.0.0-alpha.8'
+    hooks:
+      - id: prettier
+        additional_dependencies:
+          - prettier@3.3.3
+        entry: bash -c "prettier --write --log-level error ."
+        pass_filenames: false
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.39.0
+    hooks:
+      - id: markdownlint
+        name: Lint Markdown files
+        args:
+          - --fix
+          - --config
+          - .markdownlint.yaml
+        exclude: |
+          (?x)^(
+            node_modules/|
+            dist/|
+            .angular/
+          )
+
+  - repo: local
+    hooks:
+      - id: lint-fix
+        name: lint-fix
+        language: system
+        entry: bash -c "npx eslint --fix ."
+        pass_filenames: false
+
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.19.0
+    hooks:
+      - id: commitlint
+        stages: [commit-msg]
+        additional_dependencies: ['@commitlint/config-conventional']
+
+  - repo: local
+    hooks:
+      - id: tsc
+        name: tsc
+        description: 'Ensures that TypeScript files compile successfully.'
+        entry: bash -c "yarn tsc"
+        language: node
+        types_or: [ts, tsx]
+        pass_filenames: false
+        args: [--noEmit]
+        additional_dependencies: ['typescript@~5.8.0']

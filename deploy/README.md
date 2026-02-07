@@ -16,6 +16,7 @@ This directory contains deployment resources for the Backstage application.
 ## Future Resources
 
 This directory is organized to hold additional deployment resources such as:
+
 - Terraform/IaC configurations
 - Helm charts
 - Cloud-specific deployment configs (AWS, GCP, Azure)

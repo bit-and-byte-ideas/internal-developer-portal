@@ -87,6 +87,7 @@ kubectl describe pod -n backstage -l app=backstage
 ```
 
 Check for:
+
 - Image pull issues
 - Resource constraints
 - Node selector mismatches
@@ -98,6 +99,7 @@ kubectl logs -n backstage -l app=backstage --previous
 ```
 
 Common issues:
+
 - Missing configuration
 - Database connection failures
 - Port conflicts
@@ -105,16 +107,19 @@ Common issues:
 ### Cannot access via port-forward
 
 Ensure pod is Ready:
+
 ```bash
 kubectl get pods -n backstage
 ```
 
 Check if port 7007 is already in use locally:
+
 ```bash
 lsof -i :7007
 ```
 
 Use alternative port:
+
 ```bash
 kubectl port-forward -n backstage svc/backstage 8080:7007
 ```
@@ -131,9 +136,9 @@ Override by mounting a custom config:
 
 ```yaml
 volumeMounts:
-- name: custom-config
-  mountPath: /app/app-config.custom.yaml
-  subPath: app-config.custom.yaml
+  - name: custom-config
+    mountPath: /app/app-config.custom.yaml
+    subPath: app-config.custom.yaml
 ```
 
 And updating the container args:
@@ -151,7 +156,8 @@ args:
 ### Use PostgreSQL instead of SQLite
 
 1. Deploy PostgreSQL in the cluster
-2. Create a Secret with credentials:
+1. Create a Secret with credentials
+1. Update deployment to use production config and inject secrets as env vars
 
 ```bash
 kubectl create secret generic postgres-credentials \
@@ -161,8 +167,6 @@ kubectl create secret generic postgres-credentials \
   --from-literal=POSTGRES_PASSWORD=your-password \
   -n backstage
 ```
-
-3. Update deployment to use production config and inject secrets as env vars
 
 ### Enable Ingress
 
@@ -190,5 +194,5 @@ patches:
 ## Additional Resources
 
 - Detailed Kubernetes setup: `deploy/k8s/README.md`
-- Backstage configuration: https://backstage.io/docs/conf/
-- Docker Desktop Kubernetes: https://docs.docker.com/desktop/kubernetes/
+- Backstage configuration: <https://backstage.io/docs/conf/>
+- Docker Desktop Kubernetes: <https://docs.docker.com/desktop/kubernetes/>

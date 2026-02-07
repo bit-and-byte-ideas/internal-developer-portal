@@ -4,7 +4,7 @@ This directory contains Kubernetes manifests for deploying Backstage using Kusto
 
 ## Structure
 
-```
+```text
 deploy/k8s/
 ├── base/                      # Base Kubernetes resources (reusable)
 │   ├── deployment.yaml        # Backstage deployment with health probes
@@ -30,6 +30,7 @@ docker build -t backstage:local .
 ```
 
 The build process:
+
 - Uses Node 20 LTS
 - Multi-stage build (build + runtime)
 - Runs as non-root user (backstage:backstage)
@@ -69,17 +70,19 @@ Since ingress is disabled for docker-desktop, use port-forward:
 kubectl port-forward -n backstage svc/backstage 7007:7007
 ```
 
-Then open http://localhost:7007 in your browser.
+Then open <http://localhost:7007> in your browser.
 
 ## Configuration
 
 The deployment uses `app-config.k8s.yaml` which:
+
 - Uses SQLite database (stored at /tmp/backstage.db)
 - Enables guest authentication
 - Includes example catalog entities
 - Configured for local access
 
 To customize configuration:
+
 1. Edit `app-config.k8s.yaml` in the repository root
 2. Rebuild the ConfigMap: `kubectl apply -k deploy/k8s/overlays/docker-desktop`
 3. Restart pods: `kubectl rollout restart deployment/backstage -n backstage`
@@ -90,13 +93,13 @@ To add environment variables, edit `deploy/k8s/base/deployment.yaml` and add the
 
 ```yaml
 env:
-- name: MY_VAR
-  value: "my-value"
-- name: MY_SECRET
-  valueFrom:
-    secretKeyRef:
-      name: my-secret
-      key: my-key
+  - name: MY_VAR
+    value: 'my-value'
+  - name: MY_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: my-secret
+        key: my-key
 ```
 
 ## Health Checks
@@ -107,6 +110,7 @@ env:
 ## Resource Limits
 
 Default limits (adjust in `deployment.yaml` if needed):
+
 - Memory: 512Mi request, 1Gi limit
 - CPU: 250m request, 1000m limit
 
@@ -146,6 +150,7 @@ kubectl logs -n backstage -l app=backstage
 ### Image pull issues
 
 Ensure the image `backstage:local` exists:
+
 ```bash
 docker images | grep backstage
 ```
@@ -153,7 +158,9 @@ docker images | grep backstage
 ### Port already in use
 
 If port 7007 is already in use, change the local port:
+
 ```bash
 kubectl port-forward -n backstage svc/backstage 8080:7007
 ```
-Then access at http://localhost:8080
+
+Then access at <http://localhost:8080>

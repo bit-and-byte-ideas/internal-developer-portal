@@ -8,23 +8,23 @@ This is a **Backstage Internal Developer Portal** (v1.47.0) for the Bit & Byte I
 
 ## Common Commands
 
-| Command | Description |
-|---------|-------------|
-| `yarn start` | Start frontend (port 3000) and backend (port 7007) together |
-| `yarn test` | Run tests for changed packages |
-| `yarn test:all` | Run all tests with coverage |
-| `yarn test:e2e` | Run Playwright E2E tests |
-| `yarn lint` | Lint files changed since origin/main |
-| `yarn lint:all` | Lint all files |
-| `yarn tsc` | TypeScript type checking |
-| `yarn fix` | Auto-fix lint/formatting issues |
-| `yarn build:all` | Build all packages |
-| `yarn build:backend` | Build backend only |
-| `yarn build-image` | Build Docker image for backend |
-| `yarn clean` | Clean all packages |
-| `yarn tsc:full` | Full TypeScript check (no skip, no incremental) |
-| `yarn prettier:check` | Check code formatting |
-| `yarn new` | Scaffold a new plugin or package |
+| Command               | Description                                                 |
+| --------------------- | ----------------------------------------------------------- |
+| `yarn start`          | Start frontend (port 3000) and backend (port 7007) together |
+| `yarn test`           | Run tests for changed packages                              |
+| `yarn test:all`       | Run all tests with coverage                                 |
+| `yarn test:e2e`       | Run Playwright E2E tests                                    |
+| `yarn lint`           | Lint files changed since origin/main                        |
+| `yarn lint:all`       | Lint all files                                              |
+| `yarn tsc`            | TypeScript type checking                                    |
+| `yarn fix`            | Auto-fix lint/formatting issues                             |
+| `yarn build:all`      | Build all packages                                          |
+| `yarn build:backend`  | Build backend only                                          |
+| `yarn build-image`    | Build Docker image for backend                              |
+| `yarn clean`          | Clean all packages                                          |
+| `yarn tsc:full`       | Full TypeScript check (no skip, no incremental)             |
+| `yarn prettier:check` | Check code formatting                                       |
+| `yarn new`            | Scaffold a new plugin or package                            |
 
 Run a single test file: `yarn test -- --testPathPattern=<pattern>`
 
@@ -72,11 +72,13 @@ GitHub integration discovers repos from the `bit-and-byte-ideas` organization an
 ### Docker
 
 **Build image:**
+
 ```bash
 docker build -t backstage:local .
 ```
 
 The Dockerfile is a multi-stage build:
+
 - **Build stage**: Node 20 (note: runtime supports Node 22/24 but Docker image uses Node 20 for stability)
 - Installs deps with `yarn install --immutable --mode=skip-build`, then rebuilds better-sqlite3
 - **Runtime stage**: Node 20 slim, non-root user (`backstage`), healthcheck on `/healthcheck`
@@ -88,6 +90,7 @@ The Dockerfile is a multi-stage build:
 **Directory structure:** `deploy/k8s/base/` (reusable base) + `deploy/k8s/overlays/docker-desktop/` (local overlay)
 
 **Deploy to Docker Desktop:**
+
 ```bash
 # 1. Build image
 docker build -t backstage:local .
@@ -102,9 +105,10 @@ kubectl apply -k deploy/k8s/overlays/docker-desktop
 kubectl port-forward -n backstage svc/backstage 7007:7007
 ```
 
-Then access at http://localhost:7007
+Then access at <http://localhost:7007>
 
 **Key resources:**
+
 - Deployment with readiness/liveness probes on `/healthcheck`, resource limits (512Mi-1Gi memory, 250m-1000m CPU)
 - ClusterIP service on port 7007
 - ServiceAccount for the pod

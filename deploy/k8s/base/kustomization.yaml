@@ -5,9 +5,9 @@ namespace: backstage
 
 # Resources to include
 resources:
-- deployment.yaml
-- service.yaml
-- ingress.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
 
 # labels applied to all resources
 
@@ -15,8 +15,8 @@ resources:
 commonAnnotations:
   app.kubernetes.io/version: 1.47.0
 labels:
-- includeSelectors: true
-  pairs:
-    app.kubernetes.io/component: backend
-    app.kubernetes.io/name: backstage
-    app.kubernetes.io/part-of: backstage
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/component: backend
+      app.kubernetes.io/name: backstage
+      app.kubernetes.io/part-of: backstage

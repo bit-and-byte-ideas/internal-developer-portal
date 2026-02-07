@@ -8,7 +8,9 @@
       "Bash(git -C /workspaces/internal-developer-portal show:*)",
       "Bash(kubectl kustomize:*)",
       "Bash(ls:*)",
-      "Bash(docker build:*)"
+      "Bash(docker build:*)",
+      "Bash(pre-commit run:*)",
+      "Bash(git restore:*)"
     ]
   }
 }

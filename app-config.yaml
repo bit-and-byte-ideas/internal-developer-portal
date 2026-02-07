@@ -111,7 +111,7 @@ scaffolder:
   defaultAuthor:
     name: Bit & Byte IDP
     email: idp@bitandbyteideas.local
-  defaultCommitMessage: "Scaffold from Backstage"
+  defaultCommitMessage: 'Scaffold from Backstage'
 
 kubernetes:
   # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options

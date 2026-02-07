@@ -7,9 +7,9 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - name: http
-    port: 7007
-    targetPort: 7007
-    protocol: TCP
+    - name: http
+      port: 7007
+      targetPort: 7007
+      protocol: TCP
   selector:
     app: backstage
