@@ -26,6 +26,16 @@ spec:
         env:
         - name: NODE_ENV
           value: production
+        - name: AUTH_GITHUB_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: github-backstage-local-credentials
+              key: client-id
+        - name: AUTH_GITHUB_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: github-backstage-local-credentials
+              key: client-secret
         # Add custom environment variables here or via ConfigMap
         volumeMounts:
         - name: github-credentials
