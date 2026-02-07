@@ -5,23 +5,28 @@ namespace: backstage
 
 # Reference the base
 resources:
-  - ../../base
+- ../../base
+- secret-github-credentials.yaml
 
 # Remove ingress for local docker-desktop deployment
 # Users will access via port-forward instead
-patches:
   # Ensure single replica for local development
-  - target:
-      kind: Deployment
-      name: backstage
-    patch: |-
-      - op: replace
-        path: /spec/replicas
-        value: 1
-
-# Remove ingress resource
-patchesStrategicMerge:
-  - |-
+patches:
+- patch: |-
+    - op: replace
+      path: /spec/replicas
+      value: 1
+  target:
+    kind: Deployment
+    name: backstage
+- patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/env/0/value
+      value: development
+  target:
+    kind: Deployment
+    name: backstage
+- patch: |-
     $patch: delete
     apiVersion: networking.k8s.io/v1
     kind: Ingress
@@ -29,6 +34,8 @@ patchesStrategicMerge:
       name: backstage
 
 # Add docker-desktop specific labels
-commonLabels:
-  environment: local
-  deployment: docker-desktop
+labels:
+- includeSelectors: true
+  pairs:
+    deployment: docker-desktop
+    environment: local

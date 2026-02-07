@@ -20,9 +20,17 @@ This is a **Backstage Internal Developer Portal** (v1.47.0) for the Bit & Byte I
 | `yarn fix` | Auto-fix lint/formatting issues |
 | `yarn build:all` | Build all packages |
 | `yarn build:backend` | Build backend only |
+| `yarn build-image` | Build Docker image for backend |
+| `yarn clean` | Clean all packages |
+| `yarn tsc:full` | Full TypeScript check (no skip, no incremental) |
+| `yarn prettier:check` | Check code formatting |
 | `yarn new` | Scaffold a new plugin or package |
 
 Run a single test file: `yarn test -- --testPathPattern=<pattern>`
+
+## Development Environment
+
+**DevContainer**: The repository includes a `.devcontainer` configuration for VS Code/GitHub Codespaces with Node 22, Docker-in-Docker, kubectl, GitHub CLI, and pre-configured extensions (ESLint, Prettier, Playwright). Run `yarn install` is executed automatically on container creation.
 
 ## Architecture
 
@@ -69,9 +77,10 @@ docker build -t backstage:local .
 ```
 
 The Dockerfile is a multi-stage build:
-- **Build stage**: Node 20, installs deps with `yarn install --immutable`, builds backend + frontend
-- **Runtime stage**: Node 20 slim, non-root user (`backstage`), includes healthcheck on `/healthcheck`
-- **Config**: Uses `app-config.yaml` + `app-config.k8s.yaml` (override via mounted volumes)
+- **Build stage**: Node 20 (note: runtime supports Node 22/24 but Docker image uses Node 20 for stability)
+- Installs deps with `yarn install --immutable --mode=skip-build`, then rebuilds better-sqlite3
+- **Runtime stage**: Node 20 slim, non-root user (`backstage`), healthcheck on `/healthcheck`
+- **Config**: Uses `app-config.yaml` + `app-config.production.yaml` (can override via mounted volumes or environment variables)
 - **Database**: SQLite by default (configurable via environment variables)
 
 ### Kubernetes
@@ -96,10 +105,12 @@ kubectl port-forward -n backstage svc/backstage 7007:7007
 Then access at http://localhost:7007
 
 **Key resources:**
-- Deployment with readiness/liveness probes on `/healthcheck`
+- Deployment with readiness/liveness probes on `/healthcheck`, resource limits (512Mi-1Gi memory, 250m-1000m CPU)
 - ClusterIP service on port 7007
-- ConfigMap generated from `app-config.k8s.yaml`
 - ServiceAccount for the pod
-- Ingress (disabled in docker-desktop overlay)
+- GitHub credentials mounted as Secret volume
+- Ingress (disabled in docker-desktop overlay, access via port-forward)
+
+**Configuration approach**: Uses baked-in `app-config.yaml` + `app-config.production.yaml` from Docker image. GitHub App credentials are mounted from Kubernetes Secret at `/app/github-app-bbi-backstage-local-credentials.yaml`.
 
 See `deploy/k8s/README.md` for detailed deployment instructions and troubleshooting.

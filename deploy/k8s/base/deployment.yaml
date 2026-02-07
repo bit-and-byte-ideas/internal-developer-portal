@@ -28,9 +28,9 @@ spec:
           value: production
         # Add custom environment variables here or via ConfigMap
         volumeMounts:
-        - name: app-config
-          mountPath: /app/app-config.k8s.yaml
-          subPath: app-config.k8s.yaml
+        - name: github-credentials
+          mountPath: /app/github-app-credentials.yaml
+          subPath: github-app-credentials.yaml
           readOnly: true
         # Readiness probe: ensure backend is ready to serve traffic
         readinessProbe:
@@ -68,6 +68,9 @@ spec:
             drop:
             - ALL
       volumes:
+      - name: github-credentials
+        secret:
+          secretName: github-backstage-local-credentials
       - name: app-config
         configMap:
           name: backstage-config

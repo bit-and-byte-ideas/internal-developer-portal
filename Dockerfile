@@ -81,4 +81,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
   CMD node -e "require('http').get('http://localhost:7007/healthcheck', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
 # Start backend (it will also serve frontend static files)
-CMD ["node", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.k8s.yaml"]
+CMD ["node", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]

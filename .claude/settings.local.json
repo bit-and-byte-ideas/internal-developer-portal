@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(xargs ls:*)",
+      "Bash(git -C /workspaces/internal-developer-portal log:*)",
+      "Bash(git -C /workspaces/internal-developer-portal branch:*)",
+      "Bash(git -C /workspaces/internal-developer-portal show:*)",
+      "Bash(kubectl kustomize:*)",
+      "Bash(ls:*)",
+      "Bash(docker build:*)"
+    ]
+  }
+}

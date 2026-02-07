@@ -5,22 +5,18 @@ namespace: backstage
 
 # Resources to include
 resources:
-  - deployment.yaml
-  - service.yaml
-  - ingress.yaml
+- deployment.yaml
+- service.yaml
+- ingress.yaml
 
-# Generate ConfigMap from app-config.k8s.yaml
-configMapGenerator:
-  - name: backstage-config
-    files:
-      - ../../../app-config.k8s.yaml
+# labels applied to all resources
 
-# Common labels applied to all resources
-commonLabels:
-  app.kubernetes.io/name: backstage
-  app.kubernetes.io/component: backend
-  app.kubernetes.io/part-of: backstage
-
-# Common annotations
+# Common annotations applied to all resources
 commonAnnotations:
-  app.kubernetes.io/version: "1.47.0"
+  app.kubernetes.io/version: 1.47.0
+labels:
+- includeSelectors: true
+  pairs:
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/name: backstage
+    app.kubernetes.io/part-of: backstage
