@@ -17,7 +17,10 @@
       "Bash(grep:*)",
       "Bash(yarn backstage-cli:*)",
       "Bash(git lfs:*)",
-      "Bash(yarn tsc:*)"
+      "Bash(yarn tsc:*)",
+      "Bash(yarn outdated:*)",
+      "Bash(yarn upgrade-interactive:*)",
+      "Bash(yarn up:*)"
     ]
   }
 }
