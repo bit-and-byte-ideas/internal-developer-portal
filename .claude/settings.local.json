@@ -10,7 +10,14 @@
       "Bash(ls:*)",
       "Bash(docker build:*)",
       "Bash(pre-commit run:*)",
-      "Bash(git restore:*)"
+      "Bash(git restore:*)",
+      "Bash(yarn npm:*)",
+      "Bash(yarn dedupe:*)",
+      "mcp__plugin_aikido_aikido-mcp__aikido_full_scan",
+      "Bash(grep:*)",
+      "Bash(yarn backstage-cli:*)",
+      "Bash(git lfs:*)",
+      "Bash(yarn tsc:*)"
     ]
   }
 }
