@@ -87,6 +87,7 @@
     "@humanwhocodes/config-array/minimatch": "3.1.5",
     "recursive-readdir/minimatch": "3.1.5",
     "@stoplight/spectral-core/minimatch": "3.1.5",
+    "test-exclude/minimatch": "3.1.5",
     "svgo": "2.8.2"
   },
   "prettier": "@backstage/cli/config/prettier",
