@@ -1,0 +1,68 @@
+diff --git a/dist/commands/package/lint.cjs.js b/dist/commands/package/lint.cjs.js
+index a2a46b3d2b56ea88254d60a8fcd171600b432a4c..9702e83233f92d9dfb09a75b2998abb51ab7b961 100644
+--- a/dist/commands/package/lint.cjs.js
++++ b/dist/commands/package/lint.cjs.js
+@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
+ var fs = require('fs-extra');
+ var cleye = require('cleye');
+ var cliCommon = require('@backstage/cli-common');
+-var eslint = require('eslint');
++var eslintModule = require('eslint');
+ 
+ function _interopDefaultCompat (e) { return e && typeof e === 'object' && 'default' in e ? e : { default: e }; }
+ 
+@@ -43,19 +43,19 @@ var lint = async ({ args, info }) => {
+     void 0,
+     args
+   );
+-  const eslint$1 = new eslint.ESLint({
++  const ESLint = await eslintModule.loadESLint({ useFlatConfig: false });
++  const eslint$1 = new ESLint({
+     cwd: cliCommon.targetPaths.dir,
+     fix,
+-    extensions: ["js", "jsx", "ts", "tsx", "mjs", "cjs"]
+   });
+   const results = await eslint$1.lintFiles(
+-    directories.length ? directories : ["."]
++    directories.length ? directories : ["**/*.{js,jsx,ts,tsx,mjs,cjs}"]
+   );
+   const maxWarningsNum = maxWarnings ? +maxWarnings : -1;
+   const ignoreWarnings = maxWarningsNum === -1;
+   const failed = results.some((r) => r.errorCount > 0) || !ignoreWarnings && results.reduce((current, next) => current + next.warningCount, 0) > maxWarningsNum;
+   if (fix) {
+-    await eslint.ESLint.outputFixes(results);
++    await ESLint.outputFixes(results);
+   }
+   const formatter = await eslint$1.loadFormatter(format);
+   if (format === "eslint-formatter-friendly") {
+diff --git a/dist/commands/repo/lint.cjs.js b/dist/commands/repo/lint.cjs.js
+index f9d446ee2f232e771714cc266940d33c9e91be30..bc1f433f9d8de360a01b1381bb759c7d68501702 100644
+--- a/dist/commands/repo/lint.cjs.js
++++ b/dist/commands/repo/lint.cjs.js
+@@ -160,7 +160,8 @@ var lint = async ({ args, info }) => {
+       rootDir,
+       maxWarnings: workerMaxWarnings
+     }) => {
+-      const { ESLint } = require("eslint");
++      const { loadESLint } = require("eslint");
++      const ESLint = await loadESLint({ useFlatConfig: false });
+       const crypto = require("node:crypto");
+       const globby = require("globby");
+       const { readFile } = require("node:fs/promises");
+@@ -175,7 +176,6 @@ var lint = async ({ args, info }) => {
+         const eslint = new ESLint({
+           cwd: fullDir,
+           fix: workerFix,
+-          extensions: ["js", "jsx", "ts", "tsx", "mjs", "cjs"]
+         });
+         let sha = void 0;
+         if (shouldCache) {
+@@ -211,7 +211,7 @@ var lint = async ({ args, info }) => {
+           }
+         }
+         const formatter = await eslint.loadFormatter(workerFormat);
+-        const results = await eslint.lintFiles(["."]);
++        const results = await eslint.lintFiles(["**/*.{js,jsx,ts,tsx,mjs,cjs}"]);
+         const count = String(results.length).padStart(3);
+         const time = ((Date.now() - start) / 1e3).toFixed(2);
+         console.log(`Checked ${count} files in ${relativeDir} ${time}s`);
