@@ -16,9 +16,9 @@
     "test": "backstage-cli repo test",
     "test:all": "backstage-cli repo test --coverage",
     "test:e2e": "playwright test",
-    "fix": "backstage-cli repo fix",
-    "lint": "backstage-cli repo lint --since origin/main",
-    "lint:all": "backstage-cli repo lint",
+    "fix": "ESLINT_USE_FLAT_CONFIG=false backstage-cli repo fix",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false backstage-cli repo lint --since origin/main",
+    "lint:all": "ESLINT_USE_FLAT_CONFIG=false backstage-cli repo lint",
     "prettier:check": "prettier --check .",
     "new": "backstage-cli new"
   },
@@ -37,6 +37,7 @@
     "@jest/environment-jsdom-abstract": "^30.0.0",
     "@playwright/test": "^1.59.1",
     "@types/jest": "^30.0.0",
+    "eslint": "^9.0.0",
     "jest": "^30.2.0",
     "jsdom": "^27.1.0",
     "node-gyp": "^12.2.0",
@@ -44,6 +45,7 @@
     "typescript": "~5.9.3"
   },
   "resolutions": {
+    "eslint": "^9.0.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "fast-xml-parser": "5.5.7",
@@ -88,12 +90,13 @@
     "recursive-readdir/minimatch": "3.1.5",
     "@stoplight/spectral-core/minimatch": "3.1.5",
     "test-exclude/minimatch": "3.1.5",
-    "svgo": "2.8.2"
+    "svgo": "2.8.2",
+    "@backstage/cli-module-lint@npm:^0.1.0": "patch:@backstage/cli-module-lint@npm%3A0.1.1#~/.yarn/patches/@backstage-cli-module-lint-npm-0.1.1-df15454805.patch"
   },
   "prettier": "@backstage/cli/config/prettier",
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs}": [
-      "eslint --fix",
+      "env ESLINT_USE_FLAT_CONFIG=false eslint --fix",
       "prettier --write"
     ],
     "*.{json,md}": [
