@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@backstage/cli": "^0.36.0",
+    "@backstage/cli-defaults": "^0.1.0",
     "@backstage/e2e-test-utils": "^0.1.2",
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
@@ -64,7 +65,7 @@
     "multer": "2.1.1",
     "node-forge": "1.4.0",
     "rollup": "4.60.1",
-    "ajv": "8.18.0",
+    "@stoplight/spectral-core/ajv": "8.18.0",
     "picomatch": "2.3.2",
     "tinyglobby/picomatch": "4.0.4",
     "eslint/minimatch": "3.1.5",
