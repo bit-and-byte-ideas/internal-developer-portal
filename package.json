@@ -91,6 +91,8 @@
     "@stoplight/spectral-core/minimatch": "3.1.5",
     "test-exclude/minimatch": "3.1.5",
     "svgo": "2.8.2",
+    "ws": "8.19.0",
+    "node-fetch": "2.7.0",
     "@backstage/cli-module-lint@npm:^0.1.0": "patch:@backstage/cli-module-lint@npm%3A0.1.1#~/.yarn/patches/@backstage-cli-module-lint-npm-0.1.1-df15454805.patch"
   },
   "prettier": "@backstage/cli/config/prettier",
