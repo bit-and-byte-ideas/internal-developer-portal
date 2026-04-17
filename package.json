@@ -51,7 +51,7 @@
     "fast-xml-parser": "5.5.7",
     "i18next": "24.1.2",
     "axios": "1.15.0",
-    "basic-ftp": "5.2.2",
+    "basic-ftp": "5.3.0",
     "handlebars": "4.7.9",
     "undici": "7.25.0",
     "lodash": "4.18.1",
@@ -91,7 +91,7 @@
     "@stoplight/spectral-core/minimatch": "3.1.5",
     "test-exclude/minimatch": "3.1.5",
     "svgo": "2.8.2",
-    "ws": "8.19.0",
+    "ws": "8.20.0",
     "node-fetch": "2.7.0",
     "@backstage/cli-module-lint@npm:^0.1.0": "patch:@backstage/cli-module-lint@npm%3A0.1.1#~/.yarn/patches/@backstage-cli-module-lint-npm-0.1.1-df15454805.patch"
   },
