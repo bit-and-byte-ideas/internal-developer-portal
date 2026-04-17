@@ -2707,7 +2707,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/cli-module-lint@npm:^0.1.1":
+"@backstage/cli-module-lint@npm:0.1.1":
   version: 0.1.1
   resolution: "@backstage/cli-module-lint@npm:0.1.1"
   dependencies:
@@ -2723,6 +2723,25 @@ __metadata:
   bin:
     cli-module-lint: bin/backstage-cli-module-lint
   checksum: 10c0/0bda3cd4cd90da0ee467176014bd8d428e330c3725c28657bfb9df273b3e75d4b347b68ec4f15aaa7f388ae426a2d9d1f58c78926e47796175289aec06075362
+  languageName: node
+  linkType: hard
+
+"@backstage/cli-module-lint@patch:@backstage/cli-module-lint@npm%3A0.1.1#~/.yarn/patches/@backstage-cli-module-lint-npm-0.1.1-df15454805.patch":
+  version: 0.1.1
+  resolution: "@backstage/cli-module-lint@patch:@backstage/cli-module-lint@npm%3A0.1.1#~/.yarn/patches/@backstage-cli-module-lint-npm-0.1.1-df15454805.patch::version=0.1.1&hash=d6a25f"
+  dependencies:
+    "@backstage/cli-common": "npm:^0.2.1"
+    "@backstage/cli-node": "npm:^0.3.1"
+    chalk: "npm:^4.0.0"
+    cleye: "npm:^2.3.0"
+    eslint: "npm:^8.6.0"
+    eslint-formatter-friendly: "npm:^7.0.0"
+    fs-extra: "npm:^11.2.0"
+    globby: "npm:^11.1.0"
+    shell-quote: "npm:^1.8.1"
+  bin:
+    cli-module-lint: bin/backstage-cli-module-lint
+  checksum: 10c0/abeccdffa4e3b4a8f09d7706b84bcf908966cfa76a1477cb91d1900199b8a06f32adc13953ac5db398a3f6c910db066bf503f65c18874fb72046b6ec27d2c707
   languageName: node
   linkType: hard
 
