@@ -39,7 +39,7 @@ repos:
       - id: lint-fix
         name: lint-fix
         language: system
-        entry: bash -c "ESLINT_USE_FLAT_CONFIG=false yarn backstage-cli repo lint --fix"
+        entry: bash -c "ESLINT_USE_FLAT_CONFIG=false ./node_modules/.bin/backstage-cli repo lint --fix"
         pass_filenames: false
 
       - id: tsc
