@@ -93,6 +93,9 @@
     "svgo": "2.8.2",
     "ws": "8.20.0",
     "node-fetch": "2.7.0",
+    "protobufjs": "7.5.5",
+    "prismjs": "1.30.0",
+    "qs": "6.15.1",
     "@backstage/cli-module-lint": "patch:@backstage/cli-module-lint@npm%3A0.1.1#~/.yarn/patches/@backstage-cli-module-lint-npm-0.1.1-df15454805.patch"
   },
   "prettier": "@backstage/cli/config/prettier",
