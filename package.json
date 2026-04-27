@@ -95,6 +95,7 @@
     "node-fetch": "2.7.0",
     "protobufjs": "7.5.5",
     "prismjs": "1.30.0",
+    "postcss": "8.5.12",
     "qs": "6.15.1",
     "brace-expansion@^1.1.7": "1.1.13",
     "brace-expansion@^2.0.1": "2.0.3",
