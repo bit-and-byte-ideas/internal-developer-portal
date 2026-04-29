@@ -96,6 +96,7 @@
     "protobufjs": "7.5.5",
     "prismjs": "1.30.0",
     "qs": "6.15.1",
+    "postcss": "8.5.12",
     "brace-expansion@^1.1.7": "1.1.13",
     "brace-expansion@^2.0.1": "2.0.3",
     "@backstage/cli-module-lint": "patch:@backstage/cli-module-lint@npm%3A0.1.1#~/.yarn/patches/@backstage-cli-module-lint-npm-0.1.1-df15454805.patch"
