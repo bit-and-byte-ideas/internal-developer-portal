@@ -33,7 +33,7 @@
     "@backstage/cli-defaults": "^0.1.1",
     "@backstage/e2e-test-utils": "^0.1.2",
     "@commitlint/cli": "^20.5.0",
-    "@commitlint/config-conventional": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.3",
     "@jest/environment-jsdom-abstract": "^30.3.0",
     "@playwright/test": "^1.59.1",
     "@types/jest": "^30.0.0",
