@@ -36,8 +36,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 # node:26-trixie-slim no longer bundles Corepack at all, so it must be
 # installed via npm first; do this while still root, before dropping to the
-# `node` user, since it needs to write the yarn shim.
-RUN npm install -g corepack && corepack enable
+# `node` user, since it needs to write the yarn shim. Corepack also caches
+# the resolved package manager under $HOME/.cache on first use, so pre-create
+# and hand off that directory too, or the later `node`-user yarn invocation
+# hits EACCES trying to create it itself.
+RUN npm install -g corepack && corepack enable && \
+    mkdir -p /home/node/.cache && chown -R node:node /home/node/.cache
 
 USER node
 WORKDIR /app
@@ -79,8 +83,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 # node:26-trixie-slim no longer bundles Corepack at all, so it must be
 # installed via npm first; do this while still root, before dropping to the
-# `node` user, since it needs to write the yarn shim.
-RUN npm install -g corepack && corepack enable
+# `node` user, since it needs to write the yarn shim. Corepack also caches
+# the resolved package manager under $HOME/.cache on first use, so pre-create
+# and hand off that directory too, or the later `node`-user yarn invocation
+# hits EACCES trying to create it itself.
+RUN npm install -g corepack && corepack enable && \
+    mkdir -p /home/node/.cache && chown -R node:node /home/node/.cache
 
 # From here on we use the least-privileged `node` user to run the backend.
 USER node
