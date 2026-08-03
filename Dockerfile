@@ -1,5 +1,5 @@
 # Stage 1 - Create yarn install skeleton layer
-FROM node:26-trixie-slim AS packages
+FROM node:24-trixie-slim AS packages
 
 WORKDIR /app
 COPY backstage.json package.json yarn.lock ./
@@ -14,7 +14,7 @@ COPY plugins plugins
 RUN find packages \! -name "package.json" -mindepth 2 -maxdepth 2 -exec rm -rf {} \+
 
 # Stage 2 - Install dependencies and build packages
-FROM node:26-trixie-slim AS build
+FROM node:24-trixie-slim AS build
 
 # Set Python interpreter for `node-gyp` to use
 ENV PYTHON=/usr/bin/python3
@@ -34,12 +34,13 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get install -y --no-install-recommends libsqlite3-dev && \
     rm -rf /var/lib/apt/lists/*
 
-# node:26-trixie-slim no longer bundles Corepack at all, so it must be
-# installed via npm first; do this while still root, before dropping to the
-# `node` user, since it needs to write the yarn shim. Corepack also caches
-# the resolved package manager under $HOME/.cache on first use, so pre-create
-# and hand off that directory too, or the later `node`-user yarn invocation
-# hits EACCES trying to create it itself.
+# Recent node images may not bundle Corepack (or ship it disabled), so
+# install/enable it explicitly rather than relying on the base image. This
+# must happen while still root, before dropping to the `node` user, since it
+# needs to write the yarn shim. Corepack also caches the resolved package
+# manager under $HOME/.cache on first use, so pre-create and hand off that
+# directory too, or the later `node`-user yarn invocation hits EACCES trying
+# to create it itself.
 RUN npm install -g corepack && corepack enable && \
     mkdir -p /home/node/.cache && chown -R node:node /home/node/.cache
 
@@ -61,7 +62,7 @@ RUN mkdir packages/backend/dist/skeleton packages/backend/dist/bundle \
     && tar xzf packages/backend/dist/bundle.tar.gz -C packages/backend/dist/bundle
 
 # Stage 3 - Build the actual backend image and install production dependencies
-FROM node:26-trixie-slim
+FROM node:24-trixie-slim
 
 # Set Python interpreter for `node-gyp` to use
 ENV PYTHON=/usr/bin/python3
@@ -81,12 +82,13 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get install -y --no-install-recommends libsqlite3-dev && \
     rm -rf /var/lib/apt/lists/*
 
-# node:26-trixie-slim no longer bundles Corepack at all, so it must be
-# installed via npm first; do this while still root, before dropping to the
-# `node` user, since it needs to write the yarn shim. Corepack also caches
-# the resolved package manager under $HOME/.cache on first use, so pre-create
-# and hand off that directory too, or the later `node`-user yarn invocation
-# hits EACCES trying to create it itself.
+# Recent node images may not bundle Corepack (or ship it disabled), so
+# install/enable it explicitly rather than relying on the base image. This
+# must happen while still root, before dropping to the `node` user, since it
+# needs to write the yarn shim. Corepack also caches the resolved package
+# manager under $HOME/.cache on first use, so pre-create and hand off that
+# directory too, or the later `node`-user yarn invocation hits EACCES trying
+# to create it itself.
 RUN npm install -g corepack && corepack enable && \
     mkdir -p /home/node/.cache && chown -R node:node /home/node/.cache
 
