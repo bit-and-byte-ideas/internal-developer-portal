@@ -34,6 +34,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get install -y --no-install-recommends libsqlite3-dev && \
     rm -rf /var/lib/apt/lists/*
 
+# node:26-trixie-slim no longer ships Corepack enabled by default; the yarn
+# shim must be installed while still root, before dropping to the `node` user.
+RUN corepack enable
+
 USER node
 WORKDIR /app
 
@@ -71,6 +75,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
     apt-get install -y --no-install-recommends libsqlite3-dev && \
     rm -rf /var/lib/apt/lists/*
+
+# node:26-trixie-slim no longer ships Corepack enabled by default; the yarn
+# shim must be installed while still root, before dropping to the `node` user.
+RUN corepack enable
 
 # From here on we use the least-privileged `node` user to run the backend.
 USER node
