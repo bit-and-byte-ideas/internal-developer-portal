@@ -37,7 +37,7 @@
     "@jest/environment-jsdom-abstract": "^30.4.1",
     "@playwright/test": "^1.59.1",
     "@types/jest": "^30.0.0",
-    "eslint": "^9.0.0",
+    "eslint": "^9.39.5",
     "jest": "^30.4.2",
     "jsdom": "^27.1.0",
     "node-gyp": "^12.4.0",
@@ -45,7 +45,7 @@
     "typescript": "~5.9.3"
   },
   "resolutions": {
-    "eslint": "^9.0.0",
+    "eslint": "^9.39.5",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "fast-xml-parser": "5.7.2",
