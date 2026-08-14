@@ -23,6 +23,10 @@
     "source=/run/host-services/ssh-auth.sock,target=/ssh-agent,type=bind"
   ],
   "containerEnv": { "SSH_AUTH_SOCK": "/ssh-agent" },
+  "remoteEnv": {
+    "AUTH_GITHUB_CLIENT_ID": "${localEnv:AUTH_GITHUB_CLIENT_ID}",
+    "AUTH_GITHUB_CLIENT_SECRET": "${localEnv:AUTH_GITHUB_CLIENT_SECRET}"
+  },
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "yarn install",
