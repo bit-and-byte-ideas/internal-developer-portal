@@ -6,7 +6,6 @@ node_modules
 packages/*/node_modules
 *.local.yaml
 *.md
-!examples/**
 .devcontainer
 .github
 playwright.config.ts
