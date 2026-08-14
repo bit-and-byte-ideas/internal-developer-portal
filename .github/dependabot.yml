@@ -47,6 +47,14 @@ updates:
     labels:
       - 'dependencies'
       - 'docker'
+    ignore:
+      # Node's odd-numbered releases (23, 25, ...) never reach LTS and go
+      # EOL ~6 months after release. Bumping to one is a dead end and needs
+      # to be evaluated by hand once the next even (LTS) release is ready
+      # (see #51, #41 / 87114cc for past attempts that had to be reverted).
+      - dependency-name: 'node'
+        update-types:
+          - 'version-update:semver-major'
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
