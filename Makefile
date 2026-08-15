@@ -18,12 +18,9 @@ NAMESPACE          ?= backstage
 IMAGE              ?= backstage:local
 OVERLAY            ?= deploy/k8s/overlays/local
 KIND_CONFIG        ?= deploy/kind/kind-config.yaml
-KIND_VERSION       ?= v0.32.0
 CNPG_CHART_VERSION ?= 0.29.0
 DB_CLUSTER         ?= backstage-db
 SECRET_FILE        := deploy/k8s/overlays/local/dev/secret-github-credentials.yaml
-
-KIND_BIN := $(shell command -v kind 2>/dev/null || echo "$$HOME/.local/bin/kind")
 
 help: ## Show this help
 	@echo "Targets:"
@@ -31,20 +28,12 @@ help: ## Show this help
 
 ## --- Setup ------------------------------------------------------------
 
-tools: ## Verify docker/kubectl/helm are present; install a pinned kind if missing
+tools: ## Verify docker/kubectl/helm/kind are present (all provided by the devcontainer)
 	@command -v docker >/dev/null || { echo "docker is required"; exit 1; }
 	@command -v kubectl >/dev/null || { echo "kubectl is required"; exit 1; }
 	@command -v helm >/dev/null || { echo "helm is required"; exit 1; }
-	@if ! command -v kind >/dev/null && [ ! -x "$(KIND_BIN)" ]; then \
-		echo "Installing kind $(KIND_VERSION) to $(KIND_BIN)..."; \
-		mkdir -p "$$(dirname "$(KIND_BIN)")"; \
-		os=$$(uname -s | tr '[:upper:]' '[:lower:]'); \
-		arch=$$(uname -m); \
-		case "$$arch" in x86_64) arch=amd64 ;; aarch64|arm64) arch=arm64 ;; *) echo "unsupported arch: $$arch"; exit 1 ;; esac; \
-		curl -sSLo "$(KIND_BIN)" "https://kind.sigs.k8s.io/dl/$(KIND_VERSION)/kind-$$os-$$arch"; \
-		chmod +x "$(KIND_BIN)"; \
-	fi
-	@echo "tools OK ($$($(KIND_BIN) version))"
+	@command -v kind >/dev/null || { echo "kind is required"; exit 1; }
+	@echo "tools OK ($$(kind version))"
 
 check-secrets: ## Fail if the local GitHub secret is missing; warn if it's still unfilled
 	@if [ ! -f "$(SECRET_FILE)" ]; then \
@@ -60,14 +49,14 @@ check-secrets: ## Fail if the local GitHub secret is missing; warn if it's still
 ## --- Cluster lifecycle --------------------------------------------------
 
 kind-up: tools ## Create the kind cluster if it doesn't already exist
-	@if $(KIND_BIN) get clusters 2>/dev/null | grep -qx "$(CLUSTER_NAME)"; then \
+	@if kind get clusters 2>/dev/null | grep -qx "$(CLUSTER_NAME)"; then \
 		echo "kind cluster '$(CLUSTER_NAME)' already exists"; \
 	else \
-		$(KIND_BIN) create cluster --config $(KIND_CONFIG); \
+		kind create cluster --config $(KIND_CONFIG); \
 	fi
 
 kind-down: tools ## Delete the kind cluster (destroys the Postgres volume and all data)
-	$(KIND_BIN) delete cluster --name $(CLUSTER_NAME)
+	kind delete cluster --name $(CLUSTER_NAME)
 
 cnpg-install: ## Install the CloudNativePG operator via Helm (idempotent)
 	helm repo add cnpg https://cloudnative-pg.github.io/charts --force-update
@@ -93,7 +82,7 @@ image-build: ## Build the Backstage Docker image
 	docker build -t $(IMAGE) .
 
 kind-load: ## Load the built image into the kind cluster's containerd
-	$(KIND_BIN) load docker-image $(IMAGE) --name $(CLUSTER_NAME)
+	kind load docker-image $(IMAGE) --name $(CLUSTER_NAME)
 
 deploy: check-secrets ## Apply the local overlay (namespace, Postgres cluster, Backstage)
 	@# The CNPG operator's Deployment can report Available a moment before its

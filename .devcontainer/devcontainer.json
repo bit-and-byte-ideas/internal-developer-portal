@@ -10,14 +10,15 @@
     },
     "ghcr.io/devcontainers/features/docker-in-docker:4": {},
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
-    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
-    "ghcr.io/devcontainers/features/git-lfs:1": {},
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+      "minikube": "none"
+    },
     "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/prulloac/devcontainer-features/ollama:1": {},
     "ghcr.io/devcontainers-extra/features/pre-commit:2": {},
     "ghcr.io/devcontainers-extra/features/prettier:1": {},
     "ghcr.io/devcontainers-extra/features/claude-code:2": {},
-    "ghcr.io/devcontainers-extra/features/kind:1": {}
+    "ghcr.io/devcontainers-extra/features/kind:1": {},
+    "ghcr.io/jungaretti/features/make:1": {}
   },
 
   "mounts": [
