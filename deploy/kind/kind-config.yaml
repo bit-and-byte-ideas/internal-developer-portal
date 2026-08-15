@@ -1,0 +1,16 @@
+# Local kind cluster for testing the CloudNativePG-backed Backstage deployment.
+#
+# Single control-plane node only: this is meant to run alongside the rest of
+# the dev environment (VS Code server, yarn, etc.) on a memory-constrained
+# devcontainer, and kind removes the control-plane NoSchedule taint on
+# single-node clusters, so pods still get scheduled here.
+#
+# The node image is pinned to the default published for kind v0.32.0 so the
+# cluster's Kubernetes version doesn't silently drift with whatever kind
+# binary happens to be installed later.
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: backstage-local
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.36.1@sha256:3489c7674813ba5d8b1a9977baea8a6e553784dab7b84759d1014dbd78f7ebd5

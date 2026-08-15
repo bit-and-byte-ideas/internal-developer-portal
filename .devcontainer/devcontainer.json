@@ -16,7 +16,8 @@
     "ghcr.io/prulloac/devcontainer-features/ollama:1": {},
     "ghcr.io/devcontainers-extra/features/pre-commit:2": {},
     "ghcr.io/devcontainers-extra/features/prettier:1": {},
-    "ghcr.io/devcontainers-extra/features/claude-code:2": {}
+    "ghcr.io/devcontainers-extra/features/claude-code:2": {},
+    "ghcr.io/devcontainers-extra/features/kind:1": {}
   },
 
   "mounts": [
