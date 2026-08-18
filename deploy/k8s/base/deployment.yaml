@@ -81,9 +81,6 @@ spec:
         - name: github-credentials
           secret:
             secretName: github-backstage-local-credentials
-        - name: app-config
-          configMap:
-            name: backstage-config
       securityContext:
         fsGroup: 1000
 ---

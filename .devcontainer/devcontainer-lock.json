@@ -10,6 +10,11 @@
       "resolved": "ghcr.io/devcontainers-extra/features/claude-code@sha256:e119fb3524e9e55d47b84ee32b20085dbeae66f08d8e298e59c57a94f02d5b35",
       "integrity": "sha256:e119fb3524e9e55d47b84ee32b20085dbeae66f08d8e298e59c57a94f02d5b35"
     },
+    "ghcr.io/devcontainers-extra/features/kind:1": {
+      "version": "1.0.15",
+      "resolved": "ghcr.io/devcontainers-extra/features/kind@sha256:c28b5313388ed33e34637d411d7cd50e79b0b55f8c79f97b84d9ec20e7f6bcaa",
+      "integrity": "sha256:c28b5313388ed33e34637d411d7cd50e79b0b55f8c79f97b84d9ec20e7f6bcaa"
+    },
     "ghcr.io/devcontainers-extra/features/pre-commit:2": {
       "version": "2.0.18",
       "resolved": "ghcr.io/devcontainers-extra/features/pre-commit@sha256:6e0bb2ce80caca1d94f44dab5d0653d88a1c00984e590adb7c6bce012d0ade6e",
@@ -30,11 +35,6 @@
       "resolved": "ghcr.io/devcontainers/features/docker-outside-of-docker@sha256:c2c2cf829505ead8e4892c88c31b6594ae94a2bbb209e16e1fac456c1a3a624e",
       "integrity": "sha256:c2c2cf829505ead8e4892c88c31b6594ae94a2bbb209e16e1fac456c1a3a624e"
     },
-    "ghcr.io/devcontainers/features/git-lfs:1": {
-      "version": "1.2.5",
-      "resolved": "ghcr.io/devcontainers/features/git-lfs@sha256:71c2b371cf12ab7fcec47cf17369c6f59156100dad9abf9e4c593049d789de72",
-      "integrity": "sha256:71c2b371cf12ab7fcec47cf17369c6f59156100dad9abf9e4c593049d789de72"
-    },
     "ghcr.io/devcontainers/features/github-cli:1": {
       "version": "1.1.0",
       "resolved": "ghcr.io/devcontainers/features/github-cli@sha256:d22f50b70ed75339b4eed1ba9ecde3a1791f90e88d37936517e3bace0bbad671",
@@ -45,10 +45,10 @@
       "resolved": "ghcr.io/devcontainers/features/kubectl-helm-minikube@sha256:bbe8adf6b37fff8c67412ab0a4579f4c2f30bbaba1d9a5cebd9e38bade54025b",
       "integrity": "sha256:bbe8adf6b37fff8c67412ab0a4579f4c2f30bbaba1d9a5cebd9e38bade54025b"
     },
-    "ghcr.io/prulloac/devcontainer-features/ollama:1": {
+    "ghcr.io/jungaretti/features/make:1": {
       "version": "1.0.1",
-      "resolved": "ghcr.io/prulloac/devcontainer-features/ollama@sha256:0a4b90bd26bd2d6744a3a7080769f0d15ff379918aaa15aba1f93901ac085062",
-      "integrity": "sha256:0a4b90bd26bd2d6744a3a7080769f0d15ff379918aaa15aba1f93901ac085062"
+      "resolved": "ghcr.io/jungaretti/features/make@sha256:08d5c03484f33c16ae19e1015cdb3ef967b38db66ad0ae7f896e4cdadbb59d20",
+      "integrity": "sha256:08d5c03484f33c16ae19e1015cdb3ef967b38db66ad0ae7f896e4cdadbb59d20"
     }
   }
 }
