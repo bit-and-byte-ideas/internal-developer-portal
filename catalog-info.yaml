@@ -5,9 +5,14 @@ metadata:
   description: Bit and Byte Ideas internal developer portal.
   # Example for optional annotations
   annotations:
-    github.com/project-slug: backstage/backstage
+    github.com/project-slug: bit-and-byte-ideas/bit-and-byte-ideas-website
     backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://bitandbyteideas.com
+      title: Bit and Byte Ideas
+    - url: https://red-grass-0d5881a1e.7.azurestaticapps.net
+      title: Bit and Byte Ideas
 spec:
   type: website
   owner: user:default/solthoth
-  lifecycle: experimental
+  lifecycle: production
