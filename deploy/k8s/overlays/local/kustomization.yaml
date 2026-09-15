@@ -1,0 +1,71 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: backstage
+
+# Reference the base, plus this overlay's own namespace, Postgres cluster,
+# and GitHub credentials secret.
+#
+# Requires the CloudNativePG operator to already be installed cluster-wide
+# (`make cnpg-install`) before this can be applied — the CRD for `Cluster`
+# below won't exist otherwise.
+resources:
+  - ../../base
+  - namespace.yaml
+  - postgres-cluster.yaml
+  - dev/secret-github-credentials.yaml
+
+# Ingress isn't used for local kind testing — access via `make port-forward`,
+# matching the docker-desktop overlay's approach.
+#
+# The Postgres env vars are added via a strategic-merge patch (matched by the
+# `env` list's `name` patchMergeKey) rather than a JSON6902 index-based patch,
+# so it can't silently clobber an unrelated env var if the container's env
+# list ever gets reordered.
+patches:
+  - patch: |-
+      $patch: delete
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: backstage
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: backstage
+      spec:
+        template:
+          spec:
+            containers:
+              - name: backstage
+                env:
+                  # Keys match what CloudNativePG puts in the Cluster's
+                  # auto-generated "<cluster-name>-app" secret.
+                  - name: POSTGRES_HOST
+                    valueFrom:
+                      secretKeyRef:
+                        name: backstage-db-app
+                        key: host
+                  - name: POSTGRES_PORT
+                    valueFrom:
+                      secretKeyRef:
+                        name: backstage-db-app
+                        key: port
+                  - name: POSTGRES_USER
+                    valueFrom:
+                      secretKeyRef:
+                        name: backstage-db-app
+                        key: user
+                  - name: POSTGRES_PASSWORD
+                    valueFrom:
+                      secretKeyRef:
+                        name: backstage-db-app
+                        key: password
+
+# Add local/kind-specific labels
+labels:
+  - includeSelectors: true
+    pairs:
+      deployment: kind
+      environment: local
