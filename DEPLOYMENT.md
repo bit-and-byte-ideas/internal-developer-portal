@@ -16,6 +16,25 @@ docker run -it --rm \
 # Access at http://localhost:7007
 ```
 
+## Quick Start - Kubernetes (kind + CloudNativePG, recommended)
+
+```bash
+# 1. One-time: create your local GitHub credentials secret
+cp deploy/k8s/overlays/local/dev/secret-github-credentials.yaml.example \
+   deploy/k8s/overlays/local/dev/secret-github-credentials.yaml
+# then fill in real values (gitignored, never committed)
+
+# 2. Full pipeline: kind cluster, CloudNativePG operator, image build, deploy
+make local-up
+
+# 3. Port forward to access locally
+make port-forward
+
+# 4. Open http://localhost:7007 in your browser
+```
+
+See [`deploy/k8s/README.md`](deploy/k8s/README.md) for the full walkthrough, `make help` for all available targets, and `make local-down` to tear the cluster down.
+
 ## Quick Start - Kubernetes (Docker Desktop)
 
 ```bash
@@ -55,7 +74,7 @@ kubectl describe deployment backstage -n backstage
 
 ## Update Configuration
 
-After modifying `app-config.k8s.yaml`:
+After modifying `app-config.production.yaml` (there's no separate `app-config.k8s.yaml` — the Docker image bakes in `app-config.yaml` + `app-config.production.yaml`, see the Dockerfile's `CMD`), rebuild the image and:
 
 ```bash
 # Reapply manifests (updates ConfigMap)

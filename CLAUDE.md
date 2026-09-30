@@ -28,6 +28,20 @@ This is a **Backstage Internal Developer Portal** (v1.47.0) for the Bit & Byte I
 
 Run a single test file: `yarn test -- --testPathPattern=<pattern>`
 
+### Local Kubernetes (kind + CloudNativePG)
+
+`make` targets for deploying to a disposable local `kind` cluster with a real Postgres via CloudNativePG (see `deploy/k8s/README.md` for the full walkthrough):
+
+| Command             | Description                                                                    |
+| ------------------- | ------------------------------------------------------------------------------ |
+| `make local-up`     | Full pipeline: create cluster, install CNPG operator, build+load image, deploy |
+| `make local-down`   | Delete the kind cluster (destroys the Postgres volume and all data)            |
+| `make reload`       | Rebuild the image, reload it into kind, restart the Backstage rollout          |
+| `make port-forward` | Forward `localhost:7007` to the Backstage service                              |
+| `make status`       | Pods, services, and the Postgres `Cluster` at a glance                         |
+| `make logs`         | Tail the Backstage backend logs                                                |
+| `make help`         | Full target list                                                               |
+
 ## Development Environment
 
 **DevContainer**: The repository includes a `.devcontainer` configuration for VS Code/GitHub Codespaces with Node 22, Docker-in-Docker, kubectl, GitHub CLI, and pre-configured extensions (ESLint, Prettier, Playwright). Run `yarn install` is executed automatically on container creation.
@@ -79,15 +93,15 @@ docker build -t backstage:local .
 
 The Dockerfile is a multi-stage build:
 
-- **Build stage**: Node 20 (note: runtime supports Node 22/24 but Docker image uses Node 20 for stability)
+- **Build stage**: Node 24 (`node:24-trixie-slim`)
 - Installs deps with `yarn install --immutable --mode=skip-build`, then rebuilds better-sqlite3
-- **Runtime stage**: Node 20 slim, non-root user (`backstage`), healthcheck on `/healthcheck`
+- **Runtime stage**: Node 24 slim, non-root user (`node`), healthcheck on `/healthcheck`
 - **Config**: Uses `app-config.yaml` + `app-config.production.yaml` (can override via mounted volumes or environment variables)
-- **Database**: SQLite by default (configurable via environment variables)
+- **Database**: `app-config.yaml` (dev) uses in-memory SQLite; `app-config.production.yaml` — always loaded alongside it in the image's `CMD` — expects Postgres via `POSTGRES_HOST/PORT/USER/PASSWORD` env vars, so any k8s deployment needs those populated (see the `local` overlay below for a working example via CloudNativePG)
 
 ### Kubernetes
 
-**Directory structure:** `deploy/k8s/base/` (reusable base) + `deploy/k8s/overlays/docker-desktop/` (local overlay)
+**Directory structure:** `deploy/k8s/base/` (reusable base) + `deploy/k8s/overlays/local/` (kind + CloudNativePG Postgres, recommended — see [Local Kubernetes](#local-kubernetes-kind--cloudnativepg) above) + `deploy/k8s/overlays/docker-desktop/` (Docker Desktop, manual, no Postgres wired up)
 
 **Deploy to Docker Desktop:**
 
@@ -113,6 +127,7 @@ Then access at <http://localhost:7007>
 - ClusterIP service on port 7007
 - ServiceAccount for the pod
 - GitHub credentials mounted as Secret volume
+- (`local` overlay only) a CloudNativePG `Cluster` custom resource providing Postgres
 - Ingress (disabled in docker-desktop overlay, access via port-forward)
 
 **Configuration approach**: Uses baked-in `app-config.yaml` + `app-config.production.yaml` from Docker image. GitHub App credentials are mounted from Kubernetes Secret at `/app/github-app-bbi-backstage-local-credentials.yaml`.

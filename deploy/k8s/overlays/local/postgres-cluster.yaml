@@ -1,0 +1,45 @@
+# CloudNativePG-managed Postgres cluster for local kind testing.
+#
+# Requires the CloudNativePG operator + CRDs to already be installed in the
+# cluster (`make cnpg-install`) — this resource will fail to apply otherwise.
+#
+# Sized for a memory-constrained local devcontainer, not production: single
+# instance (no HA), 1Gi storage, modest resource requests/limits.
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: backstage-db
+spec:
+  instances: 1
+
+  storage:
+    size: 1Gi
+
+  resources:
+    requests:
+      memory: '256Mi'
+      cpu: '100m'
+    limits:
+      memory: '512Mi'
+      cpu: '500m'
+
+  postgresql:
+    parameters:
+      # Backstage's default pluginDivisionMode ("database") opens a separate
+      # connection pool per plugin (catalog, auth, search, scaffolder, ...) —
+      # roughly a dozen databases — so the default max_connections (100) is
+      # thin. Bumped here rather than in Backstage's own pool config.
+      max_connections: '200'
+      shared_buffers: '64MB'
+
+  bootstrap:
+    initdb:
+      database: backstage
+      owner: backstage
+      # The CNPG-generated app role only gets LOGIN by default. Backstage's
+      # "database" plugin-division mode needs to CREATE DATABASE per plugin
+      # at boot, so grant that here. Runs as superuser against the `postgres`
+      # database, after the app role is created but before the app database
+      # itself is created — see CloudNativePG's initdb bootstrap ordering.
+      postInitSQL:
+        - ALTER ROLE backstage CREATEDB
