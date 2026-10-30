@@ -29,8 +29,8 @@
     ]
   },
   "devDependencies": {
-    "@backstage/cli": "^0.36.5",
-    "@backstage/cli-defaults": "^0.1.5",
+    "@backstage/cli": "^0.36.7",
+    "@backstage/cli-defaults": "^0.1.7",
     "@backstage/e2e-test-utils": "^0.1.2",
     "@commitlint/cli": "^20.5.3",
     "@commitlint/config-conventional": "^20.5.3",
